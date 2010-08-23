@@ -58,12 +58,21 @@ class Map:
             if self.cur_time == 0: e.first_move()
             else: e.move()
 
-        key = raw_input()
-        if   key == 'h': self.pacman.left()
-        elif key == 'j': self.pacman.down()
-        elif key == 'k': self.pacman.up()
-        elif key == 'l': self.pacman.right()
-        elif key == 'q': exit() 
+        while 1:
+            key = raw_input()
+            if   key == 'h' and self.is_dir(self.pacman, LEFT):
+                self.pacman.left()
+                break
+            elif key == 'j' and self.is_dir(self.pacman, DOWN):
+                self.pacman.down()
+                break
+            elif key == 'k' and self.is_dir(self.pacman, UP):
+                self.pacman.up()
+                break
+            elif key == 'l' and self.is_dir(self.pacman, RIGHT):
+                self.pacman.right()
+                break
+            elif key == 'q': exit() 
 
         for e in self.enemies:
             e.update()
@@ -89,6 +98,11 @@ class Map:
         
         return way
 
+    def is_clear(self):
+        for dot in self.dots:
+            if dot.exist: return False
+        return True
+        
     def dump(self):
         for y in xrange(0, self.h):
             for x in xrange(0, self.w):
