@@ -1,4 +1,4 @@
-words = ["eat", "egg", "get", "gift", "see", "song", "take", "text"]
+#words = ["eat", "egg", "get", "gift", "see", "song", "take", "text"]
 
 def get_words(filename):
     words = []
@@ -22,12 +22,7 @@ def dfs(g, s, goal, route):
         return
     l = g.copy()
     neighbours = get_neighbour(l, s)
-    #print s, neighbours, len(neighbours),
-    #if len(neighbours) == 0:
-    #    if (len(r) % 2) == 0: print r
-    #    return
     for n in neighbours:
-        #print (s, n)
         l[(s, n)] -= 1
         dfs(l, n, goal, r)
 
@@ -49,7 +44,7 @@ def get_easy_graph(g):
         del(g[d])
     
 
-words = get_words("siritori3.txt")
+words = get_words("siritori2.txt")
 
 g = {}
 vertex = []
