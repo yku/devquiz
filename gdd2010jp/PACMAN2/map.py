@@ -1,14 +1,38 @@
 #!/usr/bin/python
 from character import *
 from defines import *
+import curses
 
 class Map:
-    def __init__(self):
+    def __init__(self, curses_enable = True):
+        self.curses_enable = curses_enable
         self.w = self.h = 0
         self.time = self.cur_time = int(0)
         self.point = int(0)
         self.enemies = []
         self.dots = []
+        self.history = ""
+        self.is_quit = False
+        if self.curses_enable: self.init_curses()
+    
+    def exit(self):
+        if self.curses_enable: self.exit_curses()
+
+    def init_curses(self):
+        self.stdscr = curses.initscr()
+        curses.start_color()
+        curses.noecho()
+        self.stdscr.keypad(1)
+        curses.cbreak()
+        curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED,   curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
+    def exit_curses(self):
+        curses.nocbreak()
+        self.stdscr.keypad(0)
+        curses.echo()
+        curses.endwin()
 
     def generate(self, filename):
         f = open(filename)
@@ -59,24 +83,34 @@ class Map:
             else: e.move()
 
         while 1:
-            key = raw_input()
+            key = self.stdscr.getkey() if self.curses_enable else raw_input()
             if   key == 'h' and self.is_dir(self.pacman, LEFT):
                 self.pacman.left()
+                self.history += key
                 break
             elif key == 'j' and self.is_dir(self.pacman, DOWN):
                 self.pacman.down()
+                self.history += key
                 break
             elif key == 'k' and self.is_dir(self.pacman, UP):
                 self.pacman.up()
+                self.history += key
                 break
             elif key == 'l' and self.is_dir(self.pacman, RIGHT):
                 self.pacman.right()
+                self.history += key
                 break
-            elif key == 'q': exit() 
+            elif key == '.':
+                self.history += key
+                break
+            elif key == 'q':
+                self.is_quit = True
+                return
 
         for e in self.enemies:
             e.update()
         self.pacman.update()
+        self.cur_time += 1
 
     def is_dir(self, chara, dir):
         x, y = chara.x, chara.y
@@ -95,7 +129,6 @@ class Map:
         if self.get(x+1, y) != '#': way += 1
         if self.get(x, y-1) != '#': way += 1
         if self.get(x, y+1) != '#': way += 1
-        
         return way
 
     def is_clear(self):
@@ -104,6 +137,21 @@ class Map:
         return True
         
     def dump(self):
+        if self.curses_enable: self.curses_dump()
+        else:                  self.raw_dump()
+
+    def curses_dump(self):
+        self.stdscr.clear()
+        for y in xrange(0, self.h):
+            for x in xrange(0, self.w):
+                c = self.get(x, y)
+                if c == '@': self.stdscr.addstr(y, x, c, curses.color_pair(2))
+                elif c.isalpha(): self.stdscr.addstr(y, x, c, curses.color_pair(3))
+                else: self.stdscr.addstr(y, x, c)
+        self.stdscr.addstr(self.h+1, 0, "TIME:" + str(self.cur_time) + "/" + str(self.time) + " POINT:" + str(self.point))
+        self.stdscr.refresh()
+
+    def raw_dump(self):
         for y in xrange(0, self.h):
             for x in xrange(0, self.w):
                 print self.get(x, y),
@@ -116,6 +164,4 @@ class Dot:
         self.x = x
         self.y = y
         self.exist = True
-    def update(self):
-        self.map.set(self.x, self.y, '.')
 
