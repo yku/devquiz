@@ -14,22 +14,26 @@ class Character:
 class Pacman(Character):
     def up(self):
         self.map.set(self.x, self.y, ' ')
+        self.prev_x = self.x
         self.prev_y = self.y
         self.y -= 1
         self.get_dot()
     def down(self):
         self.map.set(self.x, self.y, ' ')
+        self.prev_x = self.x
         self.prev_y = self.y
         self.y += 1
         self.get_dot()
     def right(self):
         self.map.set(self.x, self.y, ' ')
         self.prev_x = self.x
+        self.prev_y = self.y
         self.x += 1
         self.get_dot()
     def left(self):
         self.map.set(self.x, self.y, ' ')
         self.prev_x = self.x
+        self.prev_y = self.y
         self.x -= 1
         self.get_dot()
 

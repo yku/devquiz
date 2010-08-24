@@ -2,7 +2,7 @@
 from map import *
 
 m = Map()
-m.generate('lv2.txt')
+m.generate('lv1.txt')
 while 1:
     m.dump()
     if m.is_clear():
@@ -10,6 +10,12 @@ while 1:
         break
     if m.is_quit:
         mes = "Quit"
+        break
+    if m.timeup():
+        mes = "Time up!"
+        break
+    if m.is_collision():
+        mes = "GAME OVER"
         break
     m.input()
 m.stdscr.addstr(m.h+2, 0, "[History]")

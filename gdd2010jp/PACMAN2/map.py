@@ -135,6 +135,21 @@ class Map:
         for dot in self.dots:
             if dot.exist: return False
         return True
+    
+    def timeup(self):
+        if self.cur_time >= self.time: return True
+        return False
+
+    def is_collision(self):
+        p = self.pacman
+        for e in self.enemies:
+            if p.x == e.x and p.y == e.y: return True
+            if self.is_swap(p, e): return True
+        return False
+
+    def is_swap(self, p, e):
+        if p.prev_x == e.x and p.prev_y == e.y and p.x == e.prev_x and p.y == e.prev_y: return True
+        return False
         
     def dump(self):
         if self.curses_enable: self.curses_dump()
