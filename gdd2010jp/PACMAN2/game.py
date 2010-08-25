@@ -20,6 +20,6 @@ while 1:
     m.input()
 m.stdscr.addstr(m.h+2, 0, mes)
 m.stdscr.addstr(m.h+3, 0, "[History]")
-m.stdscr.addstr(m.h+4, 0, m.history)
+m.stdscr.addstr(m.h+4, 0, m.pacman.history)
 m.stdscr.getch()
 m.exit()

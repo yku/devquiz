@@ -12,6 +12,10 @@ class Character:
         assert False
 
 class Pacman(Character):
+    def __init__(self, map, x, y):
+        Character.__init__(self, map, x, y)
+        self.history = ""
+
     def up(self):
         self.map.set(self.x, self.y, ' ')
         self.prev_x = self.x

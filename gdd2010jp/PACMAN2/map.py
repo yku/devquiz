@@ -21,9 +21,11 @@ class Map:
     def init_curses(self):
         self.stdscr = curses.initscr()
         curses.start_color()
+        curses.use_default_colors()
         curses.noecho()
         self.stdscr.keypad(1)
         curses.cbreak()
+        curses.init_pair(0, curses.COLOR_BLACK, curses.COLOR_BLACK)
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_RED,   curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -86,22 +88,22 @@ class Map:
             key = self.stdscr.getkey() if self.curses_enable else raw_input()
             if   key == 'h' and self.is_dir(self.pacman, LEFT):
                 self.pacman.left()
-                self.history += key
+                self.pacman.history += key
                 break
             elif key == 'j' and self.is_dir(self.pacman, DOWN):
                 self.pacman.down()
-                self.history += key
+                self.pacman.history += key
                 break
             elif key == 'k' and self.is_dir(self.pacman, UP):
                 self.pacman.up()
-                self.history += key
+                self.pacman.history += key
                 break
             elif key == 'l' and self.is_dir(self.pacman, RIGHT):
                 self.pacman.right()
-                self.history += key
+                self.pacman.history += key
                 break
             elif key == '.':
-                self.history += key
+                self.pacman.history += key
                 break
             elif key == 'q':
                 self.is_quit = True
