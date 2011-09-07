@@ -13,9 +13,9 @@
 
 #define _DEBUG_    0
 #define _SCORE_    1
-#define _SKIP_     0
+#define _SKIP_     1
 
-#define TIMEOUT   30
+#define TIMEOUT   300
 #define MAX_WIDTH  6
 #define MAX_HEIGHT 6
 
@@ -139,10 +139,10 @@ void PrintBoard(int w, int h, string b)
         if((i+1) % w == 0) cout << endl;
     }
 }
-
 int CalculateCost(int w, int h, string b1, string b2)
 {
     int ret = 0;
+    
     for(int i = 0; i < b1.size(); i++) {
         if(b1[i] == '0' or b1[i] == '=') continue;
         int target = b2.find(b1[i]);
@@ -184,13 +184,7 @@ int CalculateCost(int w, int h, string b1, string b2)
         if((i+1) % w == 0) cout << endl;
 #endif
     }
-
     return ret;
-}
-
-string GASearch(const int w, const int h, const string bi, const string bf)
-{
-
 }
 
 string AstarSearch(const int w, const int h, const string bi, const string bf)
@@ -313,7 +307,7 @@ int main()
         bi = s.substr(4);
         bf = GetFinalState(bi);
         questions[wi][hi]++;
-#if _RESUME_
+#if _SKIP_
         string str = "";
         getline(ifs, str);
         if(str != ""){ 
@@ -323,7 +317,6 @@ int main()
             continue;
         }
 #endif
-        if(wi != 3 or hi != 3) { cout << endl; continue; }
         ret = AstarSearch(wi, hi, bi, bf); 
         if(ret != "") answers[wi][hi]++;
         cout << ret << endl;
