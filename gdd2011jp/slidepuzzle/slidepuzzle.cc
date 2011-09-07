@@ -188,6 +188,11 @@ int CalculateCost(int w, int h, string b1, string b2)
     return ret;
 }
 
+string GASearch(const int w, const int h, const string bi, const string bf)
+{
+
+}
+
 string AstarSearch(const int w, const int h, const string bi, const string bf)
 {
     string ret = "";
