@@ -188,7 +188,7 @@ int CalculateCost(int w, int h, string b1, string b2)
     return ret;
 }
 
-string AstarSearch(int w, int h, string bi, string bf, int adj[][5])
+string AstarSearch(const int w, const int h, const string bi, const string bf)
 {
     string ret = "";
     NODE init, goal;
@@ -196,6 +196,7 @@ string AstarSearch(int w, int h, string bi, string bf, int adj[][5])
     map<string, PARM> close;
     bool clear = false;
     clock_t stime = clock();
+    int adj[w * h][5];
 
     init.state = bi;
     init.route = "";
@@ -210,6 +211,8 @@ string AstarSearch(int w, int h, string bi, string bf, int adj[][5])
     goal.cost  = 0;
     goal.dir   = 'B';
     open.push(goal);
+    
+    CreateAdjList(w, h, adj);
     while(!open.empty()) {
         NODE node = open.top();
         string target;
@@ -303,9 +306,8 @@ int main()
         cin >> s;
         sscanf(s.c_str(), "%d,%d,", &wi, &hi);
         bi = s.substr(4);
+        bf = GetFinalState(bi);
         questions[wi][hi]++;
-        int buf[wi * hi][5];
-        CreateAdjList(wi, hi, buf);
 #if _RESUME_
         string str = "";
         getline(ifs, str);
@@ -316,8 +318,8 @@ int main()
             continue;
         }
 #endif
-        bf = GetFinalState(bi);
-        ret = AstarSearch(wi, hi, bi, bf, buf); 
+        if(wi != 3 or hi != 3) { cout << endl; continue; }
+        ret = AstarSearch(wi, hi, bi, bf); 
         if(ret != "") answers[wi][hi]++;
         cout << ret << endl;
     }
