@@ -1,5 +1,5 @@
 slidepuzzle: slidepuzzle.cc
-	g++ -o slidepuzzle slidepuzzle.cc
+	g++ -o slidepuzzle slidepuzzle.cc 
 
 run: slidepuzzle
 	./slidepuzzle < problems.txt
