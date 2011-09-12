@@ -13,7 +13,7 @@
 
 #define _DEBUG_    0
 #define _SCORE_    1
-#define _SKIP_     1
+#define _SKIP_     0
 
 #define TIMEOUT   300
 #define MAX_WIDTH  6
